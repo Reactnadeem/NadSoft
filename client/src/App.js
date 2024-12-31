@@ -19,7 +19,8 @@ const App = () => {
   const [pageLimit, setPageLimit] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const apiUrl = 'http://localhost:5000/members';
+  const apiUrl =
+    'https://crudcrud.com/api/74f8d9111ed742878a02bc4aa544a9dd/members'; // 'http://localhost:5000/members' for localhost
 
   useEffect(() => {
     const fetchMembers = async () => {
