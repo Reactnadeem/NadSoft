@@ -20,8 +20,9 @@ const App = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   // Define API URL
-  const apiUrl =
-    'https://crudcrud.com/api/84db23366720446cb5bb84fdad90daf6/members';
+  // const apiUrl =
+  //   'https://crudcrud.com/api/84db23366720446cb5bb84fdad90daf6/members';
+  const apiUrl = 'http://localhost:5000/members';
 
   // Fetch members on component mount
   useEffect(() => {
