@@ -19,9 +19,11 @@ const App = () => {
   const [pageLimit, setPageLimit] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
 
+  // Define API URL
   const apiUrl =
-    'https://crudcrud.com/api/74f8d9111ed742878a02bc4aa544a9dd/members'; // 'http://localhost:5000/members' for localhost
+    'https://crudcrud.com/api/84db23366720446cb5bb84fdad90daf6/members';
 
+  // Fetch members on component mount
   useEffect(() => {
     const fetchMembers = async () => {
       try {
@@ -34,11 +36,13 @@ const App = () => {
     fetchMembers();
   }, []);
 
+  // Handle search
   const handleSearch = event => {
     setSearchText(event.target.value);
     setCurrentPage(1); // Reset to first page on search
   };
 
+  // Filter members based on search
   const filteredMembers = members.filter(
     member =>
       (member.name &&
@@ -47,6 +51,7 @@ const App = () => {
         member.email.toLowerCase().includes(searchText.toLowerCase()))
   );
 
+  // Handle delete
   const handleDelete = id => {
     axios
       .delete(`${apiUrl}/${id}`)
@@ -57,11 +62,13 @@ const App = () => {
       .catch(() => toast.error('Failed to delete member'));
   };
 
+  // Handle edit
   const handleEdit = member => {
     setCurrentMember({ ...member });
     setIsEditing(true);
   };
 
+  // Handle save after editing
   const handleSave = async () => {
     if (!currentMember.name || !currentMember.email) {
       toast.error('Please fill in all fields');
@@ -80,6 +87,7 @@ const App = () => {
     }
   };
 
+  // Handle adding new member
   const handleAddMember = () => {
     setCurrentMember({
       name: '',
@@ -90,6 +98,7 @@ const App = () => {
     setIsAdding(true);
   };
 
+  // Handle saving a new member
   const handleAddSave = async () => {
     if (!currentMember.name || !currentMember.email) {
       toast.error('Please fill in all fields');
@@ -106,6 +115,7 @@ const App = () => {
     }
   };
 
+  // Calculate total pages
   const totalPages = Math.ceil(filteredMembers.length / pageLimit);
 
   return (
@@ -120,7 +130,7 @@ const App = () => {
 
         <Table
           filteredMembers={filteredMembers}
-          handleDelete={handleDelete}
+          handleDelete={handleDelete} // Pass handleDelete to Table
           handleEdit={handleEdit}
           currentPage={currentPage}
           pageLimit={pageLimit}

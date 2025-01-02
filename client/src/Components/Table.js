@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
-import { FaTrashAlt } from 'react-icons/fa'; // Import React Icons
+import { FaTrashAlt } from 'react-icons/fa';
+import ConfirmDeleteModal from './ConfirmDeleteModal'; // Import the confirmation modal
 
 const Table = ({
   filteredMembers,
@@ -10,6 +11,19 @@ const Table = ({
   currentPage,
   pageLimit,
 }) => {
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
+
+  const handleOpenDeleteModal = id => {
+    setDeleteId(id);
+    setShowDeleteModal(true); // Show the confirmation modal
+  };
+
+  const handleCloseDeleteModal = () => {
+    setShowDeleteModal(false);
+    setDeleteId(null); // Clear the deleteId when closing the modal
+  };
+
   const columns = [
     {
       name: 'ID',
@@ -37,7 +51,7 @@ const Table = ({
         <div>
           <Button
             variant="danger"
-            onClick={() => handleDelete(row._id)}
+            onClick={() => handleOpenDeleteModal(row._id)} // Show delete modal
             style={{ borderRadius: '50%' }}
           >
             <FaTrashAlt color="white" />
@@ -48,13 +62,22 @@ const Table = ({
   ];
 
   return (
-    <DataTable
-      columns={columns}
-      data={filteredMembers.slice(
-        (currentPage - 1) * pageLimit,
-        currentPage * pageLimit
-      )} // Pagination logic
-    />
+    <div>
+      <DataTable
+        columns={columns}
+        data={filteredMembers.slice(
+          (currentPage - 1) * pageLimit,
+          currentPage * pageLimit
+        )}
+      />
+      {showDeleteModal && (
+        <ConfirmDeleteModal
+          id={deleteId}
+          handleDelete={handleDelete} // Pass the delete function
+          closeModal={handleCloseDeleteModal} // Close modal after action
+        />
+      )}
+    </div>
   );
 };
 
